@@ -59,6 +59,7 @@ const symbolSvg = `<svg class="symbol" viewBox="0 0 32 32" xmlns="http://www.w3.
 const defaults = {
     style: 'yellow',
     type: 'full',
+    tagType: 'button',
     widthMode: 'auto',
     widthCustom: 300,
     align: 'center',
@@ -78,6 +79,7 @@ const resetBtn = document.getElementById('reset-btn');
 const langSelect = document.getElementById('lang');
 const labelSelect = document.getElementById('label-text');
 const typeSelect = document.getElementById('type');
+const tagTypeSelect = document.getElementById('tag-type');
 const widthModeSelect = document.getElementById('width-mode');
 const widthSlider = document.getElementById('width-custom');
 const alignSelect = document.getElementById('align');
@@ -90,6 +92,7 @@ function loadStateFromUrl() {
     const params = new URLSearchParams(window.location.search);
     if (params.has('style')) state.style = params.get('style');
     if (params.has('type')) state.type = params.get('type');
+    if (params.has('tagType')) state.tagType = params.get('tagType');
     if (params.has('widthMode')) state.widthMode = params.get('widthMode');
     if (params.has('widthCustom')) state.widthCustom = parseInt(params.get('widthCustom'));
     if (params.has('align')) state.align = params.get('align');
@@ -108,6 +111,7 @@ function loadStateFromUrl() {
 function syncUi() {
     styleSelect.value = state.style;
     typeSelect.value = state.type;
+    tagTypeSelect.value = state.tagType;
     widthModeSelect.value = state.widthMode;
     widthSlider.value = state.widthCustom;
     alignSelect.value = state.align;
@@ -139,6 +143,7 @@ function updateLabels() {
 function update() {
     state.style = styleSelect.value;
     state.type = typeSelect.value;
+    state.tagType = tagTypeSelect.value;
     state.widthMode = widthModeSelect.value;
     state.widthCustom = widthSlider.value;
     state.align = alignSelect.value;
@@ -175,11 +180,29 @@ function update() {
     
     const styleAttr = `style="${styleAttrArr.join('; ')}"`;
     
-    let html = `<button class="${classes.join(' ')}" ${styleAttr}>\n    ${symbolSvg}`;
+    // Generate code based on tag type
+    let html = '';
+    const classStr = classes.join(' ');
+    
+    if (state.tagType === 'button') {
+        html = `<button type="button" class="${classStr}" ${styleAttr}>\n    ${symbolSvg}`;
+    } else if (state.tagType === 'anchor') {
+        html = `<a href="#" class="${classStr}" ${styleAttr}>\n    ${symbolSvg}`;
+    } else if (state.tagType === 'div') {
+        html = `<div role="button" tabindex="0" class="${classStr}" ${styleAttr}>\n    ${symbolSvg}`;
+    }
+
     if (!isShort) {
         html += `\n    ${state.label}`;
     }
-    html += `\n</button>`;
+    
+    if (state.tagType === 'button') {
+        html += `\n</button>`;
+    } else if (state.tagType === 'anchor') {
+        html += `\n</a>`;
+    } else if (state.tagType === 'div') {
+        html += `\n</div>`;
+    }
 
     previewContainer.innerHTML = html;
     
@@ -203,7 +226,7 @@ labelSelect.addEventListener('change', () => {
     update();
 });
 
-[styleSelect, typeSelect, widthModeSelect, widthSlider, alignSelect, heightInput, radiusInput].forEach(el => el.addEventListener('input', update));
+[styleSelect, typeSelect, tagTypeSelect, widthModeSelect, widthSlider, alignSelect, heightInput, radiusInput].forEach(el => el.addEventListener('input', update));
 
 tabBtns.forEach(btn => {
     btn.addEventListener('click', () => {

@@ -63,7 +63,7 @@ const state = {
     widthCustom: 300,
     align: 'center',
     lang: 'ko',
-    label: '카카오 로그인',
+    label: '',
     height: 45,
     radius: 12,
     activeTab: 'html'
@@ -83,10 +83,52 @@ const heightInput = document.getElementById('height');
 const radiusInput = document.getElementById('radius');
 const tabBtns = document.querySelectorAll('.tab-btn');
 
+function loadStateFromUrl() {
+    const params = new URLSearchParams(window.location.search);
+    if (params.has('style')) state.style = params.get('style');
+    if (params.has('type')) state.type = params.get('type');
+    if (params.has('widthMode')) state.widthMode = params.get('widthMode');
+    if (params.has('widthCustom')) state.widthCustom = parseInt(params.get('widthCustom'));
+    if (params.has('align')) state.align = params.get('align');
+    if (params.has('lang')) state.lang = params.get('lang');
+    if (params.has('height')) state.height = parseInt(params.get('height'));
+    if (params.has('radius')) state.radius = parseInt(params.get('radius'));
+    
+    // Update UI elements
+    styleSelect.value = state.style;
+    typeSelect.value = state.type;
+    widthModeSelect.value = state.widthMode;
+    widthSlider.value = state.widthCustom;
+    alignSelect.value = state.align;
+    langSelect.value = state.lang;
+    heightInput.value = state.height;
+    radiusInput.value = state.radius;
+
+    updateLabels();
+    if (params.has('label')) {
+        state.label = params.get('label');
+        labelSelect.value = state.label;
+    }
+}
+
+function updateUrl() {
+    const params = new URLSearchParams();
+    Object.keys(state).forEach(key => {
+        if (key !== 'activeTab') {
+            params.set(key, state[key]);
+        }
+    });
+    const newUrl = `${window.location.pathname}?${params.toString()}`;
+    window.history.replaceState({}, '', newUrl);
+}
+
 function updateLabels() {
     const currentLabels = labels[state.lang];
     labelSelect.innerHTML = currentLabels.map(l => `<option value="${l}">${l}</option>`).join('');
-    state.label = currentLabels[0];
+    if (!currentLabels.includes(state.label)) {
+        state.label = currentLabels[0];
+    }
+    labelSelect.value = state.label;
 }
 
 function update() {
@@ -96,6 +138,7 @@ function update() {
     state.widthCustom = widthSlider.value;
     state.align = alignSelect.value;
     state.lang = langSelect.value;
+    state.label = labelSelect.value;
     state.height = heightInput.value;
     state.radius = radiusInput.value;
     
@@ -140,6 +183,8 @@ function update() {
     } else {
         codeDisplay.textContent = cssContent;
     }
+
+    updateUrl();
 }
 
 langSelect.addEventListener('change', () => {
@@ -170,5 +215,6 @@ copyBtn.addEventListener('click', () => {
     setTimeout(() => copyBtn.textContent = 'Copy', 2000);
 });
 
-updateLabels();
+// Initialize
+loadStateFromUrl();
 update();

@@ -180,36 +180,26 @@ function update() {
     
     const styleAttr = `style="${styleAttrArr.join('; ')}"`;
     
-    // Generate code based on tag type
-    let html = '';
+    // Preview uses the raw HTML
+    let previewHtml = '';
     const classStr = classes.join(' ');
-    
     if (state.tagType === 'button') {
-        html = `<button type="button" class="${classStr}" ${styleAttr}>\n    ${symbolSvg}`;
+        previewHtml = `<button type="button" class="${classStr}" ${styleAttr}>\n    ${symbolSvg}\n    ${isShort ? '' : state.label}\n</button>`;
     } else if (state.tagType === 'anchor') {
-        html = `<a href="#" class="${classStr}" ${styleAttr}>\n    ${symbolSvg}`;
+        previewHtml = `<a href="#" class="${classStr}" ${styleAttr}>\n    ${symbolSvg}\n    ${isShort ? '' : state.label}\n</a>`;
     } else if (state.tagType === 'div') {
-        html = `<div role="button" tabindex="0" class="${classStr}" ${styleAttr}>\n    ${symbolSvg}`;
+        previewHtml = `<div role="button" tabindex="0" class="${classStr}" ${styleAttr}>\n    ${symbolSvg}\n    ${isShort ? '' : state.label}\n</div>`;
     }
-
-    if (!isShort) {
-        html += `\n    ${state.label}`;
-    }
+    previewContainer.innerHTML = previewHtml;
     
-    if (state.tagType === 'button') {
-        html += `\n</button>`;
-    } else if (state.tagType === 'anchor') {
-        html += `\n</a>`;
-    } else if (state.tagType === 'div') {
-        html += `\n</div>`;
-    }
-
-    previewContainer.innerHTML = html;
-    
+    // Code generation
     if (state.activeTab === 'html') {
-        codeDisplay.textContent = html;
-    } else {
+        codeDisplay.textContent = previewHtml;
+    } else if (state.activeTab === 'css') {
         codeDisplay.textContent = cssContent;
+    } else if (state.activeTab === 'component') {
+        const compHtml = `<!-- 1. Include the script -->\n<script src="https://cocoroac.github.io/kakao-auth-button/js/kakao-login-button.js"></script>\n\n<!-- 2. Use the component -->\n<kakao-login-button \n  height="${state.height}" \n  width="${widthVal}" \n  style-type="${state.style}" \n  type="${state.type}" \n  lang="${state.lang}" \n  align="${state.align}" \n  radius="${state.radius}"\n></kakao-login-button>`;
+        codeDisplay.textContent = compHtml;
     }
 
     updateUrl();

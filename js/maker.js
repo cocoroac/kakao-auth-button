@@ -56,22 +56,25 @@ const symbolSvg = `<svg class="symbol" viewBox="0 0 32 32" xmlns="http://www.w3.
     <path d="M16 5c-7.18 0-13 4.477-13 10 0 3.57 2.414 6.64 6.1 8.47-.24.81-1.08 3.81-1.19 4.28-.08.35.14.35.31.24.67-.45 3.75-2.53 5.13-3.47.86.32 1.74.5 2.65.5 7.18 0 13-4.477 13-10S23.18 5 16 5z"/>
 </svg>`;
 
-const state = {
+const defaults = {
     style: 'yellow',
     type: 'full',
     widthMode: 'auto',
     widthCustom: 300,
     align: 'center',
     lang: 'ko',
-    label: '',
+    label: '카카오 로그인',
     height: 45,
     radius: 12,
     activeTab: 'html'
 };
 
+let state = { ...defaults };
+
 const previewContainer = document.getElementById('preview-container');
 const codeDisplay = document.getElementById('code-display');
 const copyBtn = document.getElementById('copy-btn');
+const resetBtn = document.getElementById('reset-btn');
 const langSelect = document.getElementById('lang');
 const labelSelect = document.getElementById('label-text');
 const typeSelect = document.getElementById('type');
@@ -94,7 +97,15 @@ function loadStateFromUrl() {
     if (params.has('height')) state.height = parseInt(params.get('height'));
     if (params.has('radius')) state.radius = parseInt(params.get('radius'));
     
-    // Update UI elements
+    syncUi();
+    updateLabels();
+    if (params.has('label')) {
+        state.label = params.get('label');
+        labelSelect.value = state.label;
+    }
+}
+
+function syncUi() {
     styleSelect.value = state.style;
     typeSelect.value = state.type;
     widthModeSelect.value = state.widthMode;
@@ -103,12 +114,6 @@ function loadStateFromUrl() {
     langSelect.value = state.lang;
     heightInput.value = state.height;
     radiusInput.value = state.radius;
-
-    updateLabels();
-    if (params.has('label')) {
-        state.label = params.get('label');
-        labelSelect.value = state.label;
-    }
 }
 
 function updateUrl() {
@@ -213,6 +218,13 @@ copyBtn.addEventListener('click', () => {
     navigator.clipboard.writeText(codeDisplay.textContent);
     copyBtn.textContent = 'Copied!';
     setTimeout(() => copyBtn.textContent = 'Copy', 2000);
+});
+
+resetBtn.addEventListener('click', () => {
+    state = { ...defaults };
+    syncUi();
+    updateLabels();
+    update();
 });
 
 // Initialize

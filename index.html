@@ -32,6 +32,11 @@
             box-shadow: 0 10px 40px rgba(0,0,0,0.08);
             margin-bottom: 30px;
         }
+        .card-header {
+            display: flex;
+            justify-content: flex-end;
+            margin-bottom: 15px;
+        }
         .preview-area {
             display: flex;
             justify-content: center;
@@ -144,6 +149,21 @@
         .copy-btn:hover {
             background: rgba(255,255,255,0.2);
         }
+        .reset-btn {
+            background: #f0f0f0;
+            border: none;
+            color: #666;
+            padding: 8px 16px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 13px;
+            font-weight: 600;
+            transition: all 0.2s;
+        }
+        .reset-btn:hover {
+            background: #e5e5e5;
+            color: #333;
+        }
         .footer-disclaimer {
             text-align: center;
             margin-top: 40px;
@@ -166,6 +186,10 @@
     <p class="subtitle">Create a compliant Kakao login button with pure HTML/CSS</p>
 
     <div class="card">
+        <div class="card-header">
+            <button class="reset-btn" id="reset-btn">Reset to Defaults</button>
+        </div>
+        
         <div class="preview-area">
             <div class="preview-container" id="preview-container"></div>
         </div>

@@ -1,0 +1,74 @@
+/* Kakao Login Button CSS */
+.kakao-login-btn {
+    /* Default variables - can be overridden via style attribute or class */
+    --kakao-btn-height: 45px;
+    --kakao-btn-width: auto;
+    --kakao-btn-bg: #FEE500;
+    --kakao-btn-text: rgba(0, 0, 0, 0.85);
+    --kakao-btn-radius: 12px;
+    
+    /* Internal scaling logic */
+    --kakao-btn-font-size: calc(var(--kakao-btn-height) / 3);
+    --kakao-btn-padding: calc(var(--kakao-btn-height) * 0.4);
+    --kakao-btn-symbol-size: calc(var(--kakao-btn-height) * 0.4);
+    --kakao-btn-symbol-margin: calc(var(--kakao-btn-height) * 0.18);
+
+    display: inline-flex;
+    align-items: center;
+    justify-content: center; /* Default: Center aligned */
+    height: var(--kakao-btn-height);
+    width: var(--kakao-btn-width);
+    padding: 0 var(--kakao-btn-padding);
+    background-color: var(--kakao-btn-bg);
+    color: var(--kakao-btn-text);
+    border-radius: var(--kakao-btn-radius);
+    text-decoration: none;
+    font-family: 'Apple SD Gothic Neo', 'Noto Sans KR', sans-serif;
+    font-size: var(--kakao-btn-font-size);
+    font-weight: 700;
+    border: none;
+    cursor: pointer;
+    box-sizing: border-box;
+    white-space: nowrap;
+    transition: filter 0.2s, background-color 0.2s;
+    outline: none;
+    -webkit-font-smoothing: antialiased;
+}
+
+.kakao-login-btn:hover {
+    filter: brightness(0.96);
+}
+
+.kakao-login-btn:active {
+    filter: brightness(0.92);
+}
+
+.kakao-login-btn svg.symbol {
+    width: var(--kakao-btn-symbol-size);
+    height: var(--kakao-btn-symbol-size);
+    margin-right: var(--kakao-btn-symbol-margin);
+    flex-shrink: 0;
+    display: block;
+    fill: currentColor;
+}
+
+.kakao-login-btn.white {
+    --kakao-btn-bg: #FFFFFF;
+    border: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* Alignment Utilities */
+.kakao-login-btn.left {
+    justify-content: flex-start;
+}
+
+/* Short version (Symbol only) */
+.kakao-login-btn.short {
+    padding: 0;
+    width: var(--kakao-btn-height); /* Reset to square for short version unless width overridden */
+    justify-content: center;
+}
+
+.kakao-login-btn.short svg.symbol {
+    margin-right: 0;
+}

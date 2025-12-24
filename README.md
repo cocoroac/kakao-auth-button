@@ -1,0 +1,21 @@
+# Kakao Login Button Maker
+
+A static web tool to generate Kakao Login buttons using pure HTML and CSS.
+
+## Features
+- No image resources required (SVG-based symbol).
+- Strict adherence to [Kakao Design Guide](https://developers.kakao.com/docs/latest/ko/kakaologin/design-guide).
+- Customizable height, width, and alignment.
+- Support for Full (완성형) and Short (축약형) button types.
+- Localization support (Korean/English).
+
+## Directory Structure
+- `index.html`: Entry point for the button maker tool.
+- `css/`: Stylesheets.
+- `js/`: Logic for the generator tool.
+
+## Legal Disclaimer
+- **Not Official:** This project is an unofficial open-source tool and is not affiliated with, authorized, maintained, sponsored, or endorsed by Kakao Corp.
+- **Trademark:** The "Kakao" name and the Kakao Talk bubble symbol are registered trademarks of Kakao Corp.
+- **Compliance:** Generated buttons are intended solely for implementing Kakao Login functionality in accordance with the [official Design Guide](https://developers.kakao.com/docs/latest/ko/kakaologin/design-guide). Any misuse or distortion of the brand assets is strictly prohibited by Kakao Corp.
+- **License:** The source code of this tool is provided under the MIT License.
